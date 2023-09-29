@@ -5,11 +5,12 @@ stages:
   - deploy
 
 variables:
-  DOCKER_IMAGE: $DOCKER_IMAGE:latest
+  DOCKER_IMAGE: nodeanddocker:latest
 
 build:
   stage: build
   script:
+    - sudo service docker restart
     - docker build -t $DOCKER_IMAGE .
 
 test:
@@ -22,4 +23,5 @@ deploy:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker push $DOCKER_IMAGE
-
+  only:
+    - main
